@@ -71,3 +71,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+*Dependecies*
+
+1. npm i --save @nestjs/config
+2. npm i nestjs/mongoose mongoose
