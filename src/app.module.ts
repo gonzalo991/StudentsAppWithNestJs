@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 // Importé MongooseModule del paquetes de nest mongoose para configurar el acceso a la base de datos mongodb
 import { MongooseModule } from '@nestjs/mongoose';
+import { PupilsModule } from './pupils/pupils.module';
 
 @Module({
 
@@ -29,6 +30,8 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
+
+    PupilsModule,
 
   ],
 
