@@ -60,6 +60,6 @@ export class PupilsService {
   }
 
   async remove(id: string): Promise<Pupil> {
-    return await this.pupilModel.findOneAndDelete(id).exec();
+    return await this.pupilModel.findByIdAndDelete(id).exec();
   }
 }

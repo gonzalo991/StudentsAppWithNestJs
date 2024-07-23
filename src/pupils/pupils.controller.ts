@@ -19,16 +19,16 @@ export class PupilsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.pupilsService.findOne(+id);
+    return this.pupilsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePupilDto: UpdatePupilDto) {
-    return this.pupilsService.update(+id, updatePupilDto);
+    return this.pupilsService.update(id, updatePupilDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.pupilsService.remove(+id);
+    return this.pupilsService.remove(id);
   }
 }
