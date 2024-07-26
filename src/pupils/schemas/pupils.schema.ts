@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-import { Subject, SubjectSchema } from "../../subjects/schemas/subject.schema";
+import { Subject, SubjectSchema } from "src/subjects/schemas/subject.schema";
 
 export type PupilDocument = HydratedDocument<Pupil>;
 
@@ -34,15 +34,8 @@ export class Pupil {
     })
     section: string;
 
-    @Prop({
-        type: [{ type: SubjectSchema }],
-        get: (subjects: Subject[]) => subjects,
-        set: (subjects: Subject[]) => subjects,
-    })
-    subjects: [];
+    @Prop({ type: [SubjectSchema], default: [] })
+    subjects: Subject[];
 }
 
 export const PupilSchema = SchemaFactory.createForClass(Pupil);
-
-PupilSchema.set('toJSON', { getters: true });
-PupilSchema.set('toObject', { getters: true });

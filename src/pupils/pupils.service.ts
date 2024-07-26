@@ -5,29 +5,38 @@ import { PupilFactory } from './schemas/factories/pupil_factory.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pupil } from './schemas/pupils.schema';
 import { Model } from 'mongoose';
+import { Subject } from 'src/subjects/schemas/subject.schema';
 
 @Injectable()
 export class PupilsService {
 
   constructor(
     @Inject('PupilFactory') private readonly pupilFactory: PupilFactory,
+    @InjectModel(Subject.name) private readonly subjectModel: Model<Subject>,
     @InjectModel(Pupil.name) private readonly pupilModel: Model<Pupil>,
   ) { }
 
   async create(createPupilDto: CreatePupilDto): Promise<Pupil> {
-    const { name, surname, dni, section, subjects } = createPupilDto;
+    try {
+      let { name, surname, dni, section, subjects } = createPupilDto;
 
-    // Para agregar las mnaterias hacer una búsqueda en la base de datos mediante el dni del estudiante y
-    // el nombre de la materia
-    /*
-    const subjectInstance = subjects.map(subject => this.subjectFactory
-      .createSubject(subject.subjectName, subject.qualification));
-*/
+      if (dni && subjects.length === 0) {
+        const subjectDocuments = await this.subjectModel.find({ pupilDni: dni }).exec();
+        subjectDocuments ? subjects.push(subjectDocuments
+          .map(doc => doc.toObject())) : console.info(`El documento ${subjectDocuments} está vacío`);
+      }
 
-    const pupil = this.pupilFactory.createPupil(name, surname, dni, section, subjects);
-    const createdPupil = new this.pupilModel(pupil);
+      const pupil = this.pupilFactory.createPupil(name, surname, dni, section, subjects);
+      const createdPupil = new this.pupilModel(pupil);
 
-    return await createdPupil.save();
+      return await createdPupil.save();
+
+    } catch (error) {
+
+      throw new Error(`Ocurrio un error al crear el alumno: \n
+        ${error}`);
+
+    }
   }
 
   async findAll(): Promise<Pupil[]> {
@@ -39,6 +48,7 @@ export class PupilsService {
   }
 
   async update(id: string, updatePupilDto: UpdatePupilDto) {
+    
     const existingPupil = await this.pupilModel.findById(id).exec();
 
     if (!existingPupil) {

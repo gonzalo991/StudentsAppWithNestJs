@@ -12,14 +12,23 @@ export class SubjectsService {
   constructor(
     @Inject('SubjectFactory') private readonly subjectFactory: SubjectFactory,
     @InjectModel(Subject.name) private readonly subjectModel: Model<Subject>
-  ){}
+  ) { }
 
   async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    const {pupilDni, subjectName, qualification} = createSubjectDto;
-    const subjectInstance = this.subjectFactory.createSubject(pupilDni, subjectName, qualification);
-    const createdSubject = new this.subjectModel(subjectInstance);
+    try {
 
-    return await createdSubject.save();
+      const { pupilDni, subjectName, qualification } = createSubjectDto;
+      const subjectInstance = this.subjectFactory.createSubject(pupilDni, subjectName, qualification);
+      const createdSubject = new this.subjectModel(subjectInstance);
+
+      return await createdSubject.save();
+
+    } catch (error) {
+
+      throw new Error(`Ocurrió un error al crear la asignatura: \n
+      ${error}`);
+
+    }
   }
 
   async findAll() {
@@ -27,16 +36,17 @@ export class SubjectsService {
   }
 
   async findOne(pupilDni: string) {
-    return await this.subjectModel.findOne({pupilDni}).exec();
+    return await this.subjectModel.findOne({ pupilDni }).exec();
   }
 
   async update(id: string, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
     const existingSubject = await this.subjectModel.findByIdAndUpdate(id).exec();
-    if(!existingSubject){
+
+    if (!existingSubject) {
       throw new Error(`The subjects with pupil dni: ${id} doesn't exists`);
     }
 
-    const { pupilDni, subjectName, qualification} = updateSubjectDto;
+    const { pupilDni, subjectName, qualification } = updateSubjectDto;
     existingSubject.pupilDni = pupilDni;
     existingSubject.subjectName = subjectName;
     existingSubject.qualification = qualification;

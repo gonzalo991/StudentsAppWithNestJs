@@ -31,6 +31,3 @@ export class Subject {
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);
-
-SubjectSchema.set('toJSON', { getters: true });
-SubjectSchema.set('toObject', { getters: true });
