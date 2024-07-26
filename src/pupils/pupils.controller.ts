@@ -7,7 +7,7 @@ import { UpdatePupilDto } from './dto/update-pupil.dto';
 export class PupilsController {
   constructor(private readonly pupilsService: PupilsService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createPupilDto: CreatePupilDto) {
     return this.pupilsService.create(createPupilDto);
   }

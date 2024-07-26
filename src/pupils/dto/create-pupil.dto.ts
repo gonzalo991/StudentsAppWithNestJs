@@ -3,5 +3,5 @@ export class CreatePupilDto {
     readonly surname: string;
     readonly dni: string;
     readonly section: string;
-    readonly subjects: {subjectName: string, qualification: number}[];
+    readonly subjects: [];
 }

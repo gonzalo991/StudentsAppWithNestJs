@@ -3,9 +3,9 @@ import { PupilsService } from './pupils.service';
 import { PupilsController } from './pupils.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Pupil, PupilSchema } from './schemas/pupils.schema';
-import { Subject, SubjectSchema } from './schemas/subject.schema';
+import { Subject, SubjectSchema } from '../subjects/schemas/subject.schema';
 import { PupilFactoryImpl } from './schemas/factories/pupil.factory';
-import { SubjectFactoryImpl } from './schemas/factories/subject.factory';
+import { SubjectFactoryImpl } from '../subjects/schemas/factories/factories/subject.factory';
 
 @Module({
   imports: [

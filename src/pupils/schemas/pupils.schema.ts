@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-import { Subject, SubjectSchema } from "./subject.schema";
+import { Subject, SubjectSchema } from "../../subjects/schemas/subject.schema";
 
 export type PupilDocument = HydratedDocument<Pupil>;
 
