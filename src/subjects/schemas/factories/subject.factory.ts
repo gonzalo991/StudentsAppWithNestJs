@@ -1,4 +1,4 @@
-import { Subject } from "../../subject.schema";
+import { Subject } from "../subject.schema";
 import { SubjectFactory } from "./subject_factory.interface";
 
 // Implementación de los métodos de la interfaz de la fábrica de materias

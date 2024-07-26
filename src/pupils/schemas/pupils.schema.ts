@@ -34,8 +34,12 @@ export class Pupil {
     })
     section: string;
 
-    @Prop({ type: SubjectSchema, default: [] })
-    subjects: Subject[];
+    @Prop({
+        type: [{ type: SubjectSchema }],
+        get: (subjects: Subject[]) => subjects,
+        set: (subjects: Subject[]) => subjects,
+    })
+    subjects: [];
 }
 
 export const PupilSchema = SchemaFactory.createForClass(Pupil);

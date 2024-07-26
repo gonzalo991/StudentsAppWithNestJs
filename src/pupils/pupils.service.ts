@@ -4,7 +4,6 @@ import { UpdatePupilDto } from './dto/update-pupil.dto';
 import { PupilFactory } from './schemas/factories/pupil_factory.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pupil } from './schemas/pupils.schema';
-import { SubjectFactory } from '../subjects/schemas/factories/factories/subject_factory.interface';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -12,7 +11,6 @@ export class PupilsService {
 
   constructor(
     @Inject('PupilFactory') private readonly pupilFactory: PupilFactory,
-    @Inject('SubjectFactory') private readonly subjectFactory: SubjectFactory,
     @InjectModel(Pupil.name) private readonly pupilModel: Model<Pupil>,
   ) { }
 
@@ -25,6 +23,7 @@ export class PupilsService {
     const subjectInstance = subjects.map(subject => this.subjectFactory
       .createSubject(subject.subjectName, subject.qualification));
 */
+
     const pupil = this.pupilFactory.createPupil(name, surname, dni, section, subjects);
     const createdPupil = new this.pupilModel(pupil);
 
@@ -52,6 +51,7 @@ export class PupilsService {
     if (surname !== undefined) existingPupil.surname = surname;
     if (dni !== undefined) existingPupil.dni = dni;
     if (section !== undefined) existingPupil.section = section;
+    existingPupil.subjects = subjects;
 
     return await existingPupil.save();
   }

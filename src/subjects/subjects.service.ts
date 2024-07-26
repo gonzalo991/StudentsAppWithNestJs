@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { Model } from 'mongoose';
+import { Subject } from './schemas/subject.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { SubjectFactory } from './schemas/factories/subject_factory.interface';
 
 @Injectable()
 export class SubjectsService {
-  create(createSubjectDto: CreateSubjectDto) {
-    return 'This action adds a new subject';
+
+  constructor(
+    @Inject('SubjectFactory') private readonly subjectFactory: SubjectFactory,
+    @InjectModel(Subject.name) private readonly subjectModel: Model<Subject>
+  ){}
+
+  async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
+    const {pupilDni, subjectName, qualification} = createSubjectDto;
+    const subjectInstance = this.subjectFactory.createSubject(pupilDni, subjectName, qualification);
+    const createdSubject = new this.subjectModel(subjectInstance);
+
+    return await createdSubject.save();
   }
 
-  findAll() {
-    return `This action returns all subjects`;
+  async findAll() {
+    return await this.subjectModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subject`;
+  async findOne(pupilDni: string) {
+    return await this.subjectModel.findOne({pupilDni}).exec();
   }
 
-  update(id: number, updateSubjectDto: UpdateSubjectDto) {
-    return `This action updates a #${id} subject`;
+  async update(id: string, updateSubjectDto: UpdateSubjectDto): Promise<Subject> {
+    const existingSubject = await this.subjectModel.findByIdAndUpdate(id).exec();
+    if(!existingSubject){
+      throw new Error(`The subjects with pupil dni: ${id} doesn't exists`);
+    }
+
+    const { pupilDni, subjectName, qualification} = updateSubjectDto;
+    existingSubject.pupilDni = pupilDni;
+    existingSubject.subjectName = subjectName;
+    existingSubject.qualification = qualification;
+
+    return await existingSubject.save();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} subject`;
+  async remove(id: string) {
+    return await this.subjectModel.findByIdAndDelete(id).exec();
   }
 }
