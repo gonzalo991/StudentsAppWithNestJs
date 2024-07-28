@@ -22,5 +22,6 @@ primary_region = 'eze'
   cpus = 1
 
 [env]
-  APP_HOST = 0.0.0.0
+  HOST = "0.0.0.0"
+  PORT = 3000
   DB_URI = "mongodb://uocaavwjstkk1rp3j05v:AQVj1SMwsWJeNNOpwJD@brudn4t3p9p7ismzsmwl-mongodb.services.clever-cloud.com:2131/brudn4t3p9p7ismzsmwl"
