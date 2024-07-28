@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for crud-con-nest-js-purple-shape-6611 on 2024-07-28T16:26:21-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'crud-con-nest-js-purple-shape-6611'
+primary_region = 'eze'
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[env]
+  APP_HOST = 0.0.0.0
+  DB_URI = "mongodb://uocaavwjstkk1rp3j05v:AQVj1SMwsWJeNNOpwJD@brudn4t3p9p7ismzsmwl-mongodb.services.clever-cloud.com:2131/brudn4t3p9p7ismzsmwl"
